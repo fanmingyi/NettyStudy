@@ -1,5 +1,6 @@
 
 
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -31,9 +32,8 @@ public class Server2 {
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
         while (true) {
-            System.out.println("select key size "+selector.keys().size());
-
-            selector.select(1000);
+//            System.out.println("select key size "+selector.keys().size());
+            selector.select();
             Set<SelectionKey> keys = selector.selectedKeys();
 
             Iterator<SelectionKey> iterator = keys.iterator();
@@ -69,12 +69,16 @@ public class Server2 {
             buffer.flip();
             if (readCount > 0) {
                 System.out.println(new java.lang.String(buffer.array(), 0, buffer.limit()));
-
                 System.out.println("服务端：开始写入信息");
                 buffer.clear();
-                buffer.put("我爱你\n".getBytes());
+                String body = new String("你好\n".getBytes(), "UTF-8");
+                buffer.put(body.getBytes());
                 buffer.flip();
                 channel.write(buffer);
+            } else {
+                System.out.println("断开链接");
+                key.cancel();
+                key.channel().close();
             }
 
 

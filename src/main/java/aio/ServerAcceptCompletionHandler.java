@@ -16,7 +16,7 @@ public class ServerAcceptCompletionHandler implements CompletionHandler<Asynchro
         attachment.accept(attachment, this);
         try {
             System.out.println("服务端：收到一个链接" + result.getRemoteAddress() + ":::" + Thread.currentThread().getName());
-//            new ServerReadCompletionHandler();
+//          new ServerReadCompletionHandler();
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 
             result.read(byteBuffer, byteBuffer, new ServerReadCompletionHandler(result));
